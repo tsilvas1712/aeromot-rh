@@ -117,7 +117,6 @@ class FeedBackResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('staf.name')
                     ->label('Profissional')
-
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Gestor')
@@ -125,8 +124,6 @@ class FeedBackResource extends Resource
                 RatingStarColumn::make('rating')
                     ->label('Nota')
                     ->sortable(),
-
-
                 Tables\Columns\IconColumn::make('staffer')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')

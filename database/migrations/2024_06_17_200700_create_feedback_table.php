@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('expectations')->nullable();
             $table->boolean('staffer')->default(true);
             $table->text('observations')->nullable();
-            $table->enum('note', [1, 2, 3, 4, 5]);
+            $table->string('rating');
             $table->timestamps();
         });
     }
