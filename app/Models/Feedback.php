@@ -22,6 +22,23 @@ class FeedBack extends Model
         'staffer',
         'observations',
         'rating',
+        'execution_rating',
+        'execution_obs',
+        'tec_know_rating',
+        'tec_know_obs',
+        'behavioral_respect_rating',
+        'behavioral_proactivity_rating',
+        'behavioral_excellence_rating',
+        'behavioral_innovation_rating',
+        'behavioral_flexibility_rating',
+        'behavioral_rules_rating',
+        'behavioral_obs',
+        'organization_planning_rating',
+        'organization_organization_rating',
+        'organization_priority_rating',   
+        'organization_deadlines_rating',
+        'organization_obs',
+        'evolution_obs',
     ];
 
     public function staf()
