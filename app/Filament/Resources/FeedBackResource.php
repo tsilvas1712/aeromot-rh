@@ -247,4 +247,9 @@ class FeedBackResource extends Resource
             'index' => Pages\ManageFeedBacks::route('/'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return auth()->user()->hasRole('Admin') ? parent::getEloquentQuery() : parent::getEloquentQuery()->where('user_id', auth()->id());
+    }
 }

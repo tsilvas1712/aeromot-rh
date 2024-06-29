@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\FeedBackProfessionalResource\Pages;
 use App\Filament\Resources\FeedBackProfessionalResource\RelationManagers;
 use App\Models\FeedBack;
+use App\Models\FeedBackProfessional;
 use App\Models\Staff;
 use App\Models\User;
 use Filament\Forms;
@@ -36,9 +37,9 @@ class FeedBackProfessionalResource extends Resource
                 Forms\Components\Select::make('staf_id')
                     ->label('Nome do Profissional')
                     ->required()
-                    ->options(Staff::all()->pluck('name', 'id'))
+                    ->options(User::all()->pluck('name', 'id'))
                     ->searchable(),
-                
+
 
                 Forms\Components\TextInput::make('office')
                     ->label('Cargo do Profissional')
@@ -141,7 +142,7 @@ class FeedBackProfessionalResource extends Resource
                             ->placeholder('Preencher com informações a partir daqui.')
                             ->columnSpanFull(),
                     ]),
-                
+
                 Section::make('Você considera que o seu Líder fornece autonomia adequada à equipe?  Dê uma nota abaixo e traga maiores informações no campo aberto.')
                     //->description('Possui todos os conhecimentos técnicos (formação, treinamentos e experiências) solicitadas em sua descrição de cargos atual')
                     ->columns(2)
@@ -235,5 +236,10 @@ class FeedBackProfessionalResource extends Resource
         return [
             'index' => Pages\ManageFeedBacksProfessional::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return auth()->user()->hasRole('Admin') ? parent::getEloquentQuery() : parent::getEloquentQuery()->where('user_id', auth()->id());
     }
 }

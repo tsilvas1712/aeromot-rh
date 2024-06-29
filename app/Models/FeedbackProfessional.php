@@ -9,7 +9,7 @@ class FeedBackProfessional extends Model
 {
     use HasFactory;
 
-    protected $table = 'feedbackprofessional';
+    protected $table = 'feedbackprofissional';
 
     protected $fillable = [
         'staf_id',

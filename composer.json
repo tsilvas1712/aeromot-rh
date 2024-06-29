@@ -7,9 +7,11 @@
     "require": {
         "php": "^8.2",
         "filament/filament": "^3.2",
+        "filament/widgets": "^3.2",
         "ibrahimbougaoua/filament-rating-star": "^1.0",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "spatie/laravel-permission": "^6.9",
         "yepsua/filament-rating-field": "^0.4.0"
     },
     "require-dev": {
