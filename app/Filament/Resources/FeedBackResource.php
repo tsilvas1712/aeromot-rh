@@ -58,7 +58,7 @@ class FeedBackResource extends Resource
                         RatingStar::make('rating')
                             ->label('Nota')
                             ->default(0)
-                            ->disabled()
+                            // ->disabled()
                     ]),
 
                 Section::make('Follow Up')

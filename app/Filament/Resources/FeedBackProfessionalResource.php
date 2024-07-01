@@ -32,25 +32,31 @@ class FeedBackProfessionalResource extends Resource
 
     public static function form(Form $form): Form
     {
+
+        $user = auth()->user();
+
         return $form
             ->schema([
-                Forms\Components\Select::make('staf_id')
+
+                Forms\Components\TextInput::make('staf_id')
                     ->label('Nome do Profissional')
                     ->required()
-                    ->options(User::all()->pluck('name', 'id'))
-                    ->searchable(),
+                    ->disabled()
+                    // ->options(User::all()->pluck('name', 'id'))
+                    ->default($user->name),
 
 
                 Forms\Components\TextInput::make('office')
                     ->label('Cargo do Profissional')
-                    ->maxLength(255)
+                    ->default($user->function)
+                    ->disabled()
                     ->columnSpan(1),
 
                 Forms\Components\Select::make('user_id')
                     ->label('Nome do Lider')
+                    ->required()
                     ->options(User::all()->pluck('name', 'id'))
-                    ->default(auth()->id())
-                    ->required(),
+                    ->searchable(),
 
                 // Section::make()
                 //     ->columnSpan(1)
@@ -78,11 +84,11 @@ class FeedBackProfessionalResource extends Resource
                 Section::make('Na sua opinião, seu Líder é aberto e receptivo à críticas ou sugestões da equipe? Dê uma nota abaixo e traga maiores informações no campo aberto.')
                     // ->description('Realiza as atividades que constam em sua descrição de cargos de forma efetiva e de acordo com seu nivel no plano de cargos e salários')
                     ->schema([
-                        RatingStar::make('execution_rating')
+                        RatingStar::make('receptive_leader_rating')
                             ->label('Nota')
                             ->default(0)
                             ->required(),
-                        Forms\Components\RichEditor::make('execution_obs')
+                        Forms\Components\RichEditor::make('receptive_leader_obs')
                             ->hiddenLabel()
                             ->placeholder('Preencher com informações a partir daqui.')
                             ->columnSpanFull(),
@@ -91,11 +97,11 @@ class FeedBackProfessionalResource extends Resource
                 Section::make('Na sua opinião, você recebe feedbacks constantes do seu Líder, mesmo que de forma informal? Dê uma nota abaixo e traga maiores informações no campo aberto.')
                     // ->description('Possui todos os conhecimentos técnicos (formação, treinamentos e experiências) solicitadas em sua descrição de cargos atual')
                     ->schema([
-                        RatingStar::make('tec_know_rating')
+                        RatingStar::make('receive_feedback_rating')
                             ->label('Nota')
                             ->default(0)
                             ->required(),
-                        Forms\Components\RichEditor::make('tec_know_obs')
+                        Forms\Components\RichEditor::make('receive_feedback_obs')
                             ->hiddenLabel()
                             ->placeholder('Preencher com informações a partir daqui.')
                             ->columnSpanFull(),
@@ -105,11 +111,25 @@ class FeedBackProfessionalResource extends Resource
                     //->description('Possui todos os conhecimentos técnicos (formação, treinamentos e experiências) solicitadas em sua descrição de cargos atual')
                     ->columns(2)
                     ->schema([
-                        RatingStar::make('tec_know_rating')
+                        RatingStar::make('answers_questions_rating')
                             ->label('Nota')
                             ->default(0)
                             ->required(),
-                        Forms\Components\RichEditor::make('tec_know_obs')
+                        Forms\Components\RichEditor::make('answers_questions_obs')
+                            ->hiddenLabel()
+                            ->placeholder('Preencher com informações a partir daqui.')
+                            ->columnSpanFull(),
+                    ]),
+
+                Section::make('Na sua opinião, seu Líder se comunica com a equipe de forma clara, transparente e adequada?  Dê uma nota abaixo e traga maiores informações no campo aberto.')
+                    //->description('Possui todos os conhecimentos técnicos (formação, treinamentos e experiências) solicitadas em sua descrição de cargos atual')
+                    ->columns(2)
+                    ->schema([
+                        RatingStar::make('comunication_rating')
+                            ->label('Nota')
+                            ->default(0)
+                            ->required(),
+                        Forms\Components\RichEditor::make('comunication_obs')
                             ->hiddenLabel()
                             ->placeholder('Preencher com informações a partir daqui.')
                             ->columnSpanFull(),
@@ -119,11 +139,11 @@ class FeedBackProfessionalResource extends Resource
                     //->description('Possui todos os conhecimentos técnicos (formação, treinamentos e experiências) solicitadas em sua descrição de cargos atual')
                     ->columns(2)
                     ->schema([
-                        RatingStar::make('tec_know_rating')
+                        RatingStar::make('trust_rating')
                             ->label('Nota')
                             ->default(0)
                             ->required(),
-                        Forms\Components\RichEditor::make('tec_know_obs')
+                        Forms\Components\RichEditor::make('trust_obs')
                             ->hiddenLabel()
                             ->placeholder('Preencher com informações a partir daqui.')
                             ->columnSpanFull(),
@@ -133,11 +153,11 @@ class FeedBackProfessionalResource extends Resource
                     //->description('Possui todos os conhecimentos técnicos (formação, treinamentos e experiências) solicitadas em sua descrição de cargos atual')
                     ->columns(2)
                     ->schema([
-                        RatingStar::make('tec_know_rating')
+                        RatingStar::make('team_development_rating')
                             ->label('Nota')
                             ->default(0)
                             ->required(),
-                        Forms\Components\RichEditor::make('tec_know_obs')
+                        Forms\Components\RichEditor::make('team_development_obs')
                             ->hiddenLabel()
                             ->placeholder('Preencher com informações a partir daqui.')
                             ->columnSpanFull(),
@@ -147,11 +167,11 @@ class FeedBackProfessionalResource extends Resource
                     //->description('Possui todos os conhecimentos técnicos (formação, treinamentos e experiências) solicitadas em sua descrição de cargos atual')
                     ->columns(2)
                     ->schema([
-                        RatingStar::make('tec_know_rating')
+                        RatingStar::make('autonomy_rating')
                             ->label('Nota')
                             ->default(0)
                             ->required(),
-                        Forms\Components\RichEditor::make('tec_know_obs')
+                        Forms\Components\RichEditor::make('autonomy_obs')
                             ->hiddenLabel()
                             ->placeholder('Preencher com informações a partir daqui.')
                             ->columnSpanFull(),
@@ -161,11 +181,11 @@ class FeedBackProfessionalResource extends Resource
                     //->description('Possui todos os conhecimentos técnicos (formação, treinamentos e experiências) solicitadas em sua descrição de cargos atual')
                     ->columns(2)
                     ->schema([
-                        RatingStar::make('tec_know_rating')
+                        RatingStar::make('healthy_relationship_rating')
                             ->label('Nota')
                             ->default(0)
                             ->required(),
-                        Forms\Components\RichEditor::make('tec_know_obs')
+                        Forms\Components\RichEditor::make('healthy_relationship_obs')
                             ->hiddenLabel()
                             ->placeholder('Preencher com informações a partir daqui.')
                             ->columnSpanFull(),
@@ -175,7 +195,7 @@ class FeedBackProfessionalResource extends Resource
                 Section::make('Se você tem sugestões ou algo que gostaria de pontuar sobre seu feedback, deixe sua opinião aqui!')
                     // ->description('Descrever brevemente as qualidades e pontos positivos do profissional.')
                     ->schema([
-                        Forms\Components\RichEditor::make('positive_points')
+                        Forms\Components\RichEditor::make('observations')
                             ->hiddenLabel()
                             ->placeholder('Descreva aqui o que deve ser retomado com o profissional.')
                             ->columnSpanFull(),
@@ -184,7 +204,7 @@ class FeedBackProfessionalResource extends Resource
                 Section::make('Existe algum ponto a ser desenvolvido pelo seu Líder, visando contribuir para a melhoria da gestão? Justifique sua resposta.')
                     // ->description('Descrever brevemente as qualidades e pontos positivos do profissional.')
                     ->schema([
-                        Forms\Components\RichEditor::make('improve_points')
+                        Forms\Components\RichEditor::make('evolution_obs')
                             ->hiddenLabel()
                             ->placeholder('Preencher com informações a partir daqui..')
                             ->columnSpanFull(),
