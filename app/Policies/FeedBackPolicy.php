@@ -13,7 +13,7 @@ class FeedBackPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->hasPermissionTo('feed_back_permissions');
     }
 
     /**
@@ -21,8 +21,8 @@ class FeedBackPolicy
      */
     public function view(User $user, FeedBack $feedBack): bool
     {
-dd(auth()->user()->id, $feedBack->user_id);
-        return auth()->user()->id === $feedBack->user_id;
+
+        return $feedBack->user_id === $user->id || $user->hasPermissionTo('feed_back_permissions');
     }
 
     /**
@@ -30,7 +30,7 @@ dd(auth()->user()->id, $feedBack->user_id);
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->hasPermissionTo(['feed_back_permissions', 'create']);
     }
 
     /**
@@ -38,7 +38,7 @@ dd(auth()->user()->id, $feedBack->user_id);
      */
     public function update(User $user, FeedBack $feedBack): bool
     {
-        return true;
+        return $user->hasRole('Admin');
     }
 
     /**
@@ -46,8 +46,6 @@ dd(auth()->user()->id, $feedBack->user_id);
      */
     public function delete(User $user, FeedBack $feedBack): bool
     {
-        return true;
+        return $user->hasRole('Admin');
     }
-
-
 }

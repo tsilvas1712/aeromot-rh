@@ -10,6 +10,8 @@ use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -18,6 +20,8 @@ use IbrahimBougaoua\FilamentRatingStar\Columns\RatingStarColumn;
 use Yepsua\Filament\Forms\Components\Rating;
 use Yepsua\Filament\Tables\Components\RatingColumn;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 
@@ -35,7 +39,12 @@ class FeedBackResource extends Resource
                 Forms\Components\Select::make('staf_id')
                     ->label('Nome do Profissional')
                     ->required()
-                    ->options(Staff::all()->pluck('name', 'id'))
+                    ->options(User::all()->pluck('name', 'id'))
+                    ->live()
+                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('office', User::query()
+                        ->select('function')
+                        ->where('id', $state)
+                        ->get()->first()->function))
                     ->searchable(),
                 Forms\Components\Select::make('user_id')
                     ->label('Nome do Gestor')
@@ -45,7 +54,7 @@ class FeedBackResource extends Resource
 
                 Forms\Components\TextInput::make('office')
                     ->label('Cargo do Profissional')
-                    ->maxLength(255)
+                    ->readOnly()
                     ->columnSpan(1),
 
                 Section::make()
@@ -58,7 +67,7 @@ class FeedBackResource extends Resource
                         RatingStar::make('rating')
                             ->label('Nota')
                             ->default(0)
-                            // ->disabled()
+                        // ->disabled()
                     ]),
 
                 Section::make('Follow Up')
@@ -233,6 +242,7 @@ class FeedBackResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -8,6 +8,7 @@ use App\Models\FeedBack;
 use App\Models\FeedBackProfessional;
 use App\Models\Staff;
 use App\Models\User;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
@@ -42,14 +43,14 @@ class FeedBackProfessionalResource extends Resource
                     ->label('Nome do Profissional')
                     ->required()
                     ->disabled()
-                    // ->options(User::all()->pluck('name', 'id'))
                     ->default($user->name),
+
 
 
                 Forms\Components\TextInput::make('office')
                     ->label('Cargo do Profissional')
                     ->default($user->function)
-                    ->disabled()
+                    ->readOnly()
                     ->columnSpan(1),
 
                 Forms\Components\Select::make('user_id')
@@ -226,16 +227,11 @@ class FeedBackProfessionalResource extends Resource
                 RatingStarColumn::make('rating')
                     ->label('Nota')
                     ->sortable(),
-                Tables\Columns\IconColumn::make('staffer')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+
             ])
             ->filters([
                 //
@@ -243,6 +239,7 @@ class FeedBackProfessionalResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -260,6 +257,6 @@ class FeedBackProfessionalResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return auth()->user()->hasRole('Admin') ? parent::getEloquentQuery() : parent::getEloquentQuery()->where('user_id', auth()->id());
+        return auth()->user()->hasRole(['Admin', 'Gestor', 'Professional']) ? parent::getEloquentQuery() : parent::getEloquentQuery()->where('user_id', auth()->id());
     }
 }

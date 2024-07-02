@@ -21,7 +21,7 @@ class FeedBackProfessionalPolicy
      */
     public function view(User $user, FeedBackProfessional $feedBackProfessional): bool
     {
-        return true;
+        return $feedBackProfessional->user_id === $user->id || $user->hasPermissionTo('feedback_professional_permissions');
     }
 
     /**
@@ -29,7 +29,7 @@ class FeedBackProfessionalPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->hasRoleTo(['Admin', 'Gestor', 'Professional']);
     }
 
     /**
@@ -37,7 +37,7 @@ class FeedBackProfessionalPolicy
      */
     public function update(User $user, FeedBackProfessional $feedBackProfessional): bool
     {
-        return true;
+        return $user->hasAllPermissions(['feedback_professional_permissions', 'update']);
     }
 
     /**
@@ -45,7 +45,6 @@ class FeedBackProfessionalPolicy
      */
     public function delete(User $user, FeedBackProfessional $feedBackProfessional): bool
     {
-        return true;
+        return $user->hasRole(['Admin']);;
     }
-
 }

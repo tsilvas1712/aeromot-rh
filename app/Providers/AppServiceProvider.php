@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\FeedBack;
+use App\Models\FeedBackProfessional;
+use App\Observers\FeedBackObserver;
+use App\Observers\FeedBackProfessionalObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        FeedBack::observe(FeedBackObserver::class);
+        FeedBackProfessional::observe(FeedBackProfessionalObserver::class);
     }
 }

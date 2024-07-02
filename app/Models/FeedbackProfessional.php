@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\FeedBackProfessionalObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy(FeedBackProfessionalObserver::class)]
 class FeedBackProfessional extends Model
 {
     use HasFactory;
@@ -39,7 +42,7 @@ class FeedBackProfessional extends Model
 
     public function staf()
     {
-        return $this->belongsTo(Staff::class);
+        return $this->belongsTo(User::class);
     }
 
     public function user()

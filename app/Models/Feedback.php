@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\FeedBackObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy(FeedBackObserver::class)]
 class FeedBack extends Model
 {
     use HasFactory;
@@ -35,7 +38,7 @@ class FeedBack extends Model
         'behavioral_obs',
         'organization_planning_rating',
         'organization_organization_rating',
-        'organization_priority_rating',   
+        'organization_priority_rating',
         'organization_deadlines_rating',
         'organization_obs',
         'evolution_obs',
@@ -43,7 +46,7 @@ class FeedBack extends Model
 
     public function staf()
     {
-        return $this->belongsTo(Staff::class);
+        return $this->belongsTo(User::class);
     }
 
     public function user()
